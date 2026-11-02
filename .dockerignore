@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.agents
+.codex
+.opencode
+.env
+.env.*
+!.env.example
+npm-debug.log*

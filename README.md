@@ -13,6 +13,16 @@ The dashboard opens automatically at http://127.0.0.1:5180/. Keep the terminal r
 
 Copy `.env.example` to `.env.local` (or `.env`) and set `VITE_API_BASE_URL` to your API origin (with or without `/v1`). During `npm run dev`, Vite proxies same-origin `/v1` requests to this backend, so local development does not require backend CORS configuration. Leave the value empty when the API is already served on the same origin. Production builds use the configured URL directly; the backend must allow the frontend origin through CORS when hosted separately. Restart Vite after changing environment values.
 
+## Docker
+
+```sh
+docker compose up -d --build
+```
+
+Open http://127.0.0.1:3002/. Both `compose.yaml` (the default) and `docker-compose.yml` provide the same analytics service on port 3002. Use either file, for example `docker compose -f docker-compose.yml up -d --build`.
+
+Compose reads `VITE_API_BASE_URL` from the shell or the project's `.env` file and passes it into the frontend build. Rebuild after changing this value. For a direct Docker build, pass `--build-arg VITE_API_BASE_URL=https://your-api.example`. An empty value uses same-origin `/v1` requests and requires an API reverse proxy in front of the container. The static container does not provide Vite's development API proxy.
+
 ## Statistics
 
 The public GET has no parameters or authentication. The network filter selects the combined Stellar + Base group locally, with launches in one alphabetical list; `public` is labeled Mainnet. Launches are selected by chain, network and contract ID. Amounts are whole USDC decimal strings and rounded to at most three decimals for display using exact integer arithmetic, without floating-point conversion, rescaling or multiplication. The original API amounts remain unchanged. Wallet and global user counts come directly from the selected server group.
